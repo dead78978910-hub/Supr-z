@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>🎁 Sürpriz Mektup</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffe6f2;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Şifre ekranı */
+    #login {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffe6f2;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    #login h2 {
+      margin-bottom: 15px;
+      color: #ff4da6;
+    }
+
+    #login input {
+      padding: 10px 15px;
+      border: 2px solid #ff4da6;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    #login button {
+      padding: 10px 20px;
+      background: #ff4da6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    #hint {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #444;
+      font-style: italic;
+    }
+
+    #error {
+      margin-top: 5px;
+      font-size: 0.9rem;
+      color: red;
+      display: none;
+    }
+
+    /* Mektup */
+    .envelope {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      background: #ff4da6;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none; /* ilk başta gizli */
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 1;
+    }
+
+    .letter {
+      position: absolute;
+      width: 260px;
+      height: 160px;
+      background: white;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: transform 1s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .show {
+      transform: translateX(-50%) translateY(-20%);
+    }
+
+    /* Kalpler */
+    .heart {
+      position: absolute;
+      font-size: 18px;
+      animation: fall linear forwards;
+      color: #ff4da6;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Şifre ekranı -->
+  <div id="login">
+    <h2>🎀 Sürprize Giriş 🎀</h2>
+    <input type="password" id="password" placeholder="Şifreyi gir...">
+    <button onclick="checkPassword()">Giriş Yap</button>
+    <p id="error">Yanlış şifre ❌</p>
+    <p id="hint">💡 İpucu: Bugün aldığın gül sayısı</p>
+  </div>
+
+  <!-- Mektup -->
+  <div class="envelope" id="envelope">
+    <div class="letter" id="letter"></div>
+  </div>
+
+  <script>
+    const messages = [
+      "Balım 💖",
+      "Bazen hatalar yapıyorum ve seni hayal kırıklığına uğratıyorum biliyorum",
+      "Benim her seferinde yanımda olacağını biliyorum ve ben de senin yanında olacağım 🎉",
+      "Sen benim bu hayatta en değer verdiğim insan ve dünyadaki en büyük hediyemsin 🎁",
+      "Gülüşün hiç solmasın sen mutlu ol yeter 😊",
+      "Seninle geçirdiğim her an nasıl geçiyor bilmiyorum ama seninleyken zaman çok çabuk geçiyor 🌟",
+      "Benim bu hayattaki en değer verdiğim insan sen olcaksın ve bu hep böyle kalacak",
+      "İyi ki seni tanımışım, iyi ki hayatımdasın 💞",
+      "Seninle sadece evin dört duvardan ibaret olmadığını öğrendim, sen benim için bir ev ve huzur bulduğum bir aile oldun",
+      "İyi ki seni tanımışım 💖"
+    ];
+
+    let current = 0;
+    const letter = document.getElementById("letter");
+    const envelope = document.getElementById("envelope");
+
+    envelope.addEventListener("click", () => {
+      if (current < messages.length) {
+        letter.classList.add("show");
+        letter.innerText = messages[current];
+        current++;
+      } else {
+        document.body.innerHTML = "<h1 style='color:#ff4da6; text-align:center; margin-top:40vh;'>💖 Sürpriz Bitti 💖</h1>";
+      }
+    });
+
+    function checkPassword() {
+      const pw = document.getElementById("password").value;
+      if (pw === "12") {
+        document.getElementById("login").style.display = "none";
+        envelope.style.display = "flex";
+      } else {
+        document.getElementById("error").style.display = "block";
+      }
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      const emojis = ["💖","💕","💞","💓","💗"];
+      heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => { heart.remove(); }, 6000);
+    }
+
+    setInterval(createHeart, 400);
+  </script>
+</body>
+</html>
